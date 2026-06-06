@@ -1,0 +1,38 @@
+---
+import { SOCIALS } from "../constants";
+---
+
+<footer class="mt-auto w-full">
+  <div class="mx-auto max-w-3xl px-4 pt-8 pb-6">
+    <div class="border-t border-border pt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-between text-sm text-muted-fg">
+      <div class="flex flex-col items-center sm:items-start gap-1">
+        <a
+          href="https://github.com/mentholmike/mwyatt.me"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-foreground"
+        >
+          Steal this site ➜ CC BY 4.0 · Code MIT
+        </a>
+        <span>© {new Date().getFullYear()} Mike Wyatt</span>
+      </div>
+      <ul class="flex items-center gap-3">
+        {
+          SOCIALS.filter((s) => s.active).map((s) => (
+            <li>
+              <a
+                href={s.href}
+                target={s.href.startsWith("http") ? "_blank" : undefined}
+                rel="noopener noreferrer"
+                title={s.linkTitle}
+                class="hover:text-foreground"
+              >
+                {s.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</footer>

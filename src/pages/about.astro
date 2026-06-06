@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="About"
+  description="Mike Wyatt — infrastructure engineer, builder of Lethe and WAGMIOS, Kubernetes in progress."
+>
+  <section class="pt-2 pb-6">
+    <h1 class="text-3xl font-bold tracking-tight">About</h1>
+  </section>
+
+  <article class="prose prose-invert max-w-none">
+    <p>
+      I'm <strong>Mike Wyatt</strong>, an infrastructure engineer based in Hiram, Georgia. Day job is at
+      <a href="https://www.cartercenter.org" target="_blank" rel="noopener noreferrer">The Carter Center</a>
+      in Atlanta — Cisco firewalls, Hyper-V, Azure, and the kind of small-but-load-bearing systems you only notice when they break.
+    </p>
+    <p>
+      Outside of work I build in public: <a href="https://github.com/openlethe/lethe" target="_blank" rel="noopener noreferrer">Lethe</a>
+      (a Go memory layer that gives AI agents persistent recall), <a href="https://github.com/mentholmike/wagmios" target="_blank" rel="noopener noreferrer">WAGMIOS</a>
+      (a self-hosted Docker manager with scoped API keys and a Vue 3 frontend), and
+      <a href="https://hotk.dev" target="_blank" rel="noopener noreferrer">Hand of the King</a>
+      (a single-player strategy game inspired by <em>King of Dragon Pass</em>, written in Go + Vue).
+    </p>
+    <p>
+      I'm studying for the CKA. The homelab runs Talos Linux on a multi-node cluster with ArgoCD, Longhorn, and the usual observability stack. The eventual goal is to land a platform / Kubernetes engineer role — currently interviewing.
+    </p>
+    <p>
+      This site is the build log. It's an Astro 6 static site, dark by default, served by nginx in a single ~25 MB container on GHCR. Source is on <a href="https://github.com/mentholmike/mwyatt.me" target="_blank" rel="noopener noreferrer">GitHub</a>; steal it.
+    </p>
+  </article>
+
+  <hr class="my-10 border-border" />
+
+  <section>
+    <h2 class="text-xl font-semibold mb-3">Find me</h2>
+    <ul class="space-y-1 text-sm">
+      <li>GitHub — <a class="text-accent hover:text-hover" href="https://github.com/mentholmike" target="_blank" rel="noopener noreferrer">@mentholmike</a></li>
+      <li>Docker Hub — <a class="text-accent hover:text-hover" href="https://hub.docker.com/u/itzmizzle" target="_blank" rel="noopener noreferrer">@itzmizzle</a></li>
+      <li>Email — <a class="text-accent hover:text-hover" href="mailto:mike@mwyatt.me">mike@mwyatt.me</a></li>
+      <li>RSS — <a class="text-accent hover:text-hover" href="/rss.xml">/rss.xml</a></li>
+    </ul>
+  </section>
+</Layout>

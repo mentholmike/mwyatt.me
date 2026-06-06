@@ -1,0 +1,42 @@
+---
+import Layout from "./Layout.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { data } = post;
+const date = data.pubDatetime;
+const dateFmt = date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+  timeZone: "UTC",
+});
+---
+
+<Layout title={data.title} description={data.description}>
+  <article class="prose prose-invert max-w-none">
+    <header class="not-prose mb-6">
+      <h1 class="text-3xl font-bold text-foreground leading-tight">{data.title}</h1>
+      <p class="mt-2 text-sm text-muted-fg">
+        <time datetime={date.toISOString()}>{dateFmt}</time>
+        {data.tags?.length > 0 && (
+          <span>
+            {" · "}
+            {data.tags.map((t, i) => (
+              <span>
+                <a href={`/tags/${t}`} class="text-accent hover:text-hover">#{t}</a>{i < data.tags.length - 1 ? " " : ""}
+              </span>
+            ))}
+          </span>
+        )}
+      </p>
+    </header>
+    <slot />
+  </article>
+  <hr class="my-10 border-border" />
+  <a href="/" class="text-accent hover:text-hover">&larr; Back to posts</a>
+</Layout>

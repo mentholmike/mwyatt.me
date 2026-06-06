@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { SITE } from "../../consts";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) =>
+    new Date(b.data.pubDatetime).getTime() -
+    new Date(a.data.pubDatetime).getTime(),
+);
+---
+
+<Layout
+  title="Posts"
+  description={`All posts on ${SITE.title}.`}
+>
+  <section class="pt-2 pb-6">
+    <h1 class="text-3xl font-bold tracking-tight">Posts</h1>
+    <p class="mt-2 text-muted-fg text-sm">
+      {posts.length} {posts.length === 1 ? "post" : "posts"}.
+    </p>
+  </section>
+
+  {posts.length === 0 ? (
+    <p class="text-muted-fg">No posts yet.</p>
+  ) : (
+    <ul class="divide-y divide-border">
+      {posts.map((p) => <PostCard post={p} />)}
+    </ul>
+  )}
+</Layout>

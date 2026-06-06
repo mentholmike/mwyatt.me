@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { data, id } = post;
+const slug = id.replace(/\.[^.]+$/, "").replace(/\/index$/, "");
+const date = data.pubDatetime;
+const dateFmt = date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+  timeZone: "UTC",
+});
+---
+
+<li class="py-4">
+  <a href={`/posts/${slug}`} class="block group">
+    <div class="flex flex-col sm:flex-row sm:items-baseline sm:gap-3">
+      <time
+        datetime={date.toISOString()}
+        class="text-sm text-muted-fg w-32 flex-shrink-0"
+      >
+        {dateFmt}
+      </time>
+      <span class="font-semibold text-foreground group-hover:text-accent transition-colors">
+        {data.title}
+      </span>
+    </div>
+    {data.description && (
+      <p class="ml-0 sm:ml-[8.5rem] mt-1 text-sm text-muted-fg">
+        {data.description}
+      </p>
+    )}
+  </a>
+</li>

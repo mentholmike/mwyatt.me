@@ -1,0 +1,139 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Font definitions */
+@font-face {
+  font-family: "Atkinson";
+  src: url("/fonts/atkinson-regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson";
+  src: url("/fonts/atkinson-bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+  mwyatt.me is dark-first.
+  Default = dark. The .light class on <html> flips to the light palette.
+*/
+:root,
+html {
+  --background: #0a0a0d;
+  --foreground: #e6e6ea;
+  --accent: #7c83ff;
+  --accent-2: #5eead4;
+  --muted: #1a1a21;
+  --muted-fg: #8a8a99;
+  --border: #23232c;
+  --link: #7c83ff;
+  --hover: #a8adff;
+  color-scheme: dark;
+}
+
+html.light {
+  --background: #fdfdfd;
+  --foreground: #1a1a21;
+  --accent: #006cac;
+  --accent-2: #0e7c66;
+  --muted: #ececec;
+  --muted-fg: #5b5b66;
+  --border: #d8d8de;
+  --link: #006cac;
+  --hover: #004a8a;
+  color-scheme: light;
+}
+
+@theme {
+  --color-*: initial;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-muted-fg: var(--muted-fg);
+  --color-border: var(--border);
+  --color-link: var(--link);
+  --color-hover: var(--hover);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-accent/75;
+    scrollbar-width: auto;
+    scrollbar-color: var(--color-muted) transparent;
+  }
+
+  html {
+    @apply overflow-y-scroll scroll-smooth;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  body {
+    @apply flex min-h-svh flex-col font-mono;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--background);
+  }
+
+  a {
+    color: var(--link);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--hover);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-style: dashed;
+  }
+  a,
+  button {
+    @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  section,
+  footer {
+    @apply mx-auto max-w-3xl px-4;
+  }
+}
+
+.active-nav {
+  @apply underline decoration-wavy decoration-2 underline-offset-4;
+}
+
+/* Prose — match dark-first theme. */
+.prose {
+  @apply prose-headings:text-foreground prose-p:text-foreground prose-a:text-accent prose-strong:text-foreground prose-li:text-foreground prose-blockquote:border-l-accent;
+  --tw-prose-links: var(--accent);
+  --tw-prose-invert-links: var(--accent);
+}
+.prose a:hover {
+  color: var(--hover);
+}
+.prose pre,
+.prose code {
+  background-color: var(--muted);
+  color: var(--foreground);
+}
+.prose pre {
+  @apply border border-border rounded-md p-4 overflow-x-auto;
+}
+.prose code::before,
+.prose code::after {
+  content: none !important;
+}
+.prose hr {
+  @apply border-border;
+}

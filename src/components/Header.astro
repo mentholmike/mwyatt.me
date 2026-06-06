@@ -1,0 +1,42 @@
+---
+import { SITE, NAV_LINKS } from "../consts";
+import ThemeToggle from "./ThemeToggle.astro";
+
+const { pathname } = Astro.url;
+const currentPath =
+  pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
+
+const isActive = (path: string) => {
+  const c = currentPath.split("/").filter((p) => p.trim());
+  const p = path.split("/").filter((p) => p.trim());
+  return currentPath === path || c[0] === p[0];
+};
+---
+
+<header>
+  <a
+    id="skip-to-content"
+    href="#main-content"
+    class="absolute -top-full left-16 z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4"
+  >
+    Skip to content
+  </a>
+  <div class="mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row px-4 pt-6 pb-2">
+    <a href="/" class="text-2xl font-semibold whitespace-nowrap">
+      {SITE.title}
+    </a>
+    <nav class="mt-3 sm:mt-0 flex items-center gap-5 text-sm">
+      {
+        NAV_LINKS.map((link) => (
+          <a
+            href={link.href}
+            class:list={["hover:text-accent", { "active-nav text-accent": isActive(link.href) }]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>

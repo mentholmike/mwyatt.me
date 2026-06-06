@@ -1,0 +1,32 @@
+# Build output
+dist/
+.astro/
+
+# Dependencies — these are installed inside the build stage.
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Git
+.git/
+.gitignore
+
+# Tests / coverage
+coverage/
+
+# This file itself
+.dockerignore

@@ -1,0 +1,97 @@
+---
+import { SITE } from "../consts";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: string;
+  canonicalURL?: URL;
+}
+
+const {
+  title = SITE.title,
+  description = SITE.desc,
+  image = "/og-default.png",
+  type = "website",
+  canonicalURL = new URL(Astro.url.pathname, Astro.site),
+} = Astro.props;
+
+const fullTitle = title === SITE.title ? title : `${title} — ${SITE.title}`;
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<meta name="author" content={SITE.author} />
+
+<title>{fullTitle}</title>
+<meta name="title" content={fullTitle} />
+<meta name="description" content={description} />
+
+<!-- Theme color matches dark default; .light class flips it -->
+<meta name="theme-color" content="#0a0a0d" />
+<meta name="color-scheme" content="dark light" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={SITE.title} />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.site)} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={new URL(image, Astro.site)} />
+
+<!-- Canonical -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- RSS + Sitemap -->
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={`${SITE.title} — RSS`}
+  href="/rss.xml"
+/>
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<!-- Font preloading -->
+<link
+  rel="preload"
+  href="/fonts/atkinson-regular.woff"
+  as="font"
+  type="font/woff"
+  crossorigin
+/>
+<link
+  rel="preload"
+  href="/fonts/atkinson-bold.woff"
+  as="font"
+  type="font/woff"
+  crossorigin
+/>
+
+<!-- Dark-default boot: read user pref, else stay dark. -->
+<script is:inline>
+  (function () {
+    try {
+      var stored = localStorage.getItem("theme");
+      var html = document.documentElement;
+      if (stored === "light") {
+        html.classList.add("light");
+      } else {
+        html.classList.remove("light");
+      }
+    } catch (e) {}
+  })();
+</script>
+
+<slot />
