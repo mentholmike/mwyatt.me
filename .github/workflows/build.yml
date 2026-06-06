@@ -57,4 +57,9 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          provenance: true
+          # Provenance attestations are rejected with 403 on user-scoped
+          # GHCR packages. We don't need SLSA provenance for a static
+          # website; the GH Actions run URL + commit SHA in the labels
+          # is enough provenance.
+          provenance: false
+          sbom: false
