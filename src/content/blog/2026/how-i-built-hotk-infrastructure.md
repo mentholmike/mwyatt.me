@@ -18,19 +18,27 @@ Here's the full stack, end to end, with all the mistakes and dead ends included.
 
 The first thing I set up wasn't a server. It was a **feedback loop**.
 
-I run [OpenClaw](https://openclaw.ai), which gives me an AI agent (I named him Archimedes) that can read my code, run tests, and push fixes. The loop works like this:
+I run [OpenClaw](https://openclaw.ai), which gives me an AI agent (I named him Archimedes) that can read my code, run tests, and push fixes. The workflow goes like this:
 
-1. I write code.
-2. Archimedes reads it, runs `go test`, checks for lint errors, and does a structured autoreview using [Codex](https://github.com/openai/codex).
-3. If he finds issues, he patches them and asks me to review.
-4. I approve or push back.
-5. Repeat until green.
+1. I write code. Or, more often lately, Archimedes writes the first draft based on a spec I give him — he has full access to the repo, can run `go test`, lint checks, and the benchmark suite.
+2. Once the code looks right, he kicks off the [autoreview skill](https://github.com/mentholmike/agent-skills) — a structured closeout check that hands the diff to [Codex](https://github.com/openai/codex) for a second-model review.
+3. Codex returns a structured report: findings with severity, file paths, and suggested fixes.
+4. Archimedes reads every finding, verifies each one against the actual code (not blindly applied), and either patches it or rejects it with reasoning.
+5. If a fix changes code, the loop restarts: focused tests, then another Codex pass.
+6. The loop keeps running until Codex comes back clean. No accepted findings, no ship.
 
-The key is that he's **not** just a chatbot. He has access to my repo, my test suite, and my Docker environment. He can run `make bench` and tell me if my change slowed the turn engine down. He can read the full HOTK game design doc and catch when I break a documented rule.
+**The key thing about the autoreview loop is patience.** A single Codex review pass can take anywhere from five minutes to half an hour depending on the size of the diff and whether it pulls in dependency docs. The skill explicitly tells you not to kill a review just because it's been quiet for a few minutes — those long silences are usually the model doing real work, not a hang. I learned this the hard way: my first instinct was to interrupt runs that looked slow, and I shipped a bug that the review would have caught.
 
-This sounds like a gimmick until you've used it for a week. The agent caught a race condition in my session manager that I missed in three manual reviews. He noticed I was using `len()/4` for token counting instead of `utf8.RuneCountInString()/4`, which broke on non-ASCII narrative text. He flagged that my `/compact` endpoint was returning the summary nested inside a `session` object while the plugin expected it at the top level — a bug that would have broken memory bootstrap on every restart.
+**What this catches that I miss:**
 
-The loop isn't perfect. Sometimes he over-engineers. Sometimes he misses context. But the hit rate on actual bugs is high enough that I don't ship without running it.
+- A race condition in my session manager that I missed in three manual reviews.
+- I was using `len()/4` for token counting instead of `utf8.RuneCountInString()/4`, which broke on non-ASCII narrative text (the game generates a lot of accented character names).
+- My `/compact` endpoint was returning the summary nested inside a `session` object while the plugin expected it at the top level — a bug that would have broken memory bootstrap on every restart.
+- A subtle issue where the MCP OAuth token resolver was swallowing errors instead of propagating them, masking a config bug on the Supabase side.
+
+**The philosophy: Codex is the reviewer of record, not Archimedes.** Archimedes writes code with strong priors. Codex comes in cold, with fresh context, and looks for things the author wouldn't. That's the whole point — a second model catches what the first one rationalizes away. ([Peter Steinberger](https://steipete.me) has been hammering on this idea for years in his own work, and he's right: a single-model loop is just the model agreeing with itself. Two models, structured handoff, real review.)
+
+The loop isn't perfect. Sometimes Codex over-flags stylistic nits. Sometimes Archimedes and I disagree on whether a finding is worth fixing. But the hit rate on actual bugs is high enough that I don't ship without running it. On the HOTK campaign engine, the autoreview loop has caught at least one substantive bug per merge for the last three months. That compounds.
 
 ---
 
