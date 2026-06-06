@@ -9,9 +9,13 @@ services:
     ports:
       - "8088:8080"
     read_only: true
+    # nginx-unprivileged needs to write to a few runtime paths. The image's
+    # entrypoint creates /tmp/proxy_temp etc. at startup; we mount them as
+    # tmpfs so read_only: true still works.
     tmpfs:
-      - /var/cache/nginx:size=32m
-      - /var/run:size=8m
+      - /tmp:size=64m
+      - /var/cache/nginx:size=64m
+      - /var/run:size=16m
     security_opt:
       - no-new-privileges:true
     healthcheck:
