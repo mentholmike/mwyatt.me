@@ -32,16 +32,32 @@ jobs:
       # The default GITHUB_TOKEN has a known incompatibility with GHCR's OCI
       # blob HEAD on user-scoped packages — even with packages: write, the
       # buildx push step hits a 403 on a config-blob HEAD. A classic PAT
-      # works because its token grants the user-scope registry permission.
+      # works because its token carries the user-scope registry permission.
       # Set CR_PAT as a repo secret (a classic PAT with `write:packages`)
       # to unblock the workflow. Without it, fall back to GITHUB_TOKEN and
-      # warn loudly so the failure is obvious.
+      # build (but don't push) so the workflow still gives a clear signal.
+      - name: Pick registry token
+        id: tok
+        run: |
+          if [ -n "$CR_PAT" ]; then
+            echo "has_pat=true" >> "$GITHUB_OUTPUT"
+            echo "password=***" >> "$GITHUB_OUTPUT"
+            echo "::notice::Using CR_PAT secret for GHCR auth."
+          else
+            echo "has_pat=false" >> "$GITHUB_OUTPUT"
+            echo "password=$GITHUB_TOKEN" >> "$GITHUB_OUTPUT"
+            echo "::warning::CR_PAT is not set — build will run but the image will not be pushed to GHCR. Create a classic PAT with write:packages and add it as a repo secret named CR_PAT to enable automated image publishing."
+          fi
+        env:
+          CR_PAT: ${{ secrets.CR_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Log in to GHCR
         uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.CR_PAT || secrets.GITHUB_TOKEN }}
+          password: ${{ steps.tok.outputs.password }}
 
       - name: Generate build metadata
         id: meta
@@ -61,18 +77,11 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: ${{ secrets.CR_PAT != '' }}
-          # When CR_PAT isn't set we still want a green ✓ on the build to
-          # confirm the Dockerfile works; we just don't push the artifact.
-          load: ${{ secrets.CR_PAT == '' }}
+          push: ${{ steps.tok.outputs.has_pat == 'true' }}
+          load: ${{ steps.tok.outputs.has_pat == 'false' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
           sbom: false
-
-      - name: Notify when no CR_PAT secret
-        if: ${{ secrets.CR_PAT == '' }}
-        run: |
-          echo "::warning::CR_PAT secret is not set. Build succeeded but no image was pushed to GHCR. Create a classic PAT with \`write:packages\` and add it as a repo secret named \`CR_PAT\` to enable automated image publishing."
