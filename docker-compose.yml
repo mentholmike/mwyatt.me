@@ -1,11 +1,9 @@
 services:
   mwyatt-me:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: mwyatt-me:local
+    image: ghcr.io/mentholmike/mwyatt-site:latest
     container_name: mwyatt-me
     restart: unless-stopped
+    pull_policy: always
     ports:
       - "8088:8080"
     read_only: true
