@@ -1,33 +1,17 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import PostCard from "../components/PostCard.astro";
-import { SITE } from "../consts";
-
-const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
-  (a, b) =>
-    new Date(b.data.pubDatetime).getTime() -
-    new Date(a.data.pubDatetime).getTime(),
-);
-const recent = posts.slice(0, SITE.postPerIndex);
 ---
 
 <Layout
-  title={SITE.title}
-  description={SITE.desc}
+  title={undefined}
+  description="Michael Wyatt — engineer. dad. professional problem solver."
 >
-  <section class="pt-2 pb-6">
-    <h1 class="text-3xl font-bold tracking-tight">
-      Hi, I'm Mike.
+  <section class="pt-4 pb-8">
+    <h1 class="text-4xl sm:text-5xl font-bold tracking-tight">
+      Hey, I'm <span class="text-accent">Michael</span>.
     </h1>
-    <p class="mt-3 text-muted-fg leading-relaxed max-w-prose">
-      Infrastructure engineer at <a href="https://www.cartercenter.org" class="text-accent hover:text-hover" target="_blank" rel="noopener noreferrer">The Carter Center</a>. Studying for CKA. Building
-      <a href="https://github.com/openlethe/lethe" class="text-accent hover:text-hover" target="_blank" rel="noopener noreferrer">Lethe</a>
-      (memory layer for AI agents),
-      <a href="https://github.com/mentholmike/wagmios" class="text-accent hover:text-hover" target="_blank" rel="noopener noreferrer">WAGMIOS</a>
-      (self-hosted Docker), and
-      <a href="https://hotk.dev" class="text-accent hover:text-hover" target="_blank" rel="noopener noreferrer">Hand of the King</a>
-      (a strategy game in Go). This site is my build log.
+    <p class="mt-4 text-lg text-muted-fg leading-relaxed max-w-prose">
+      engineer. dad. professional problem solver.
     </p>
   </section>
 
@@ -35,19 +19,8 @@ const recent = posts.slice(0, SITE.postPerIndex);
 
   <section class="pt-6">
     <h2 class="text-xl font-semibold mb-2">Posts</h2>
-    {recent.length === 0 ? (
-      <p class="text-muted-fg">No posts yet. Coming soon.</p>
-    ) : (
-      <ul class="divide-y divide-border">
-        {recent.map((p) => <PostCard post={p} />)}
-      </ul>
-    )}
-    {posts.length > recent.length && (
-      <div class="mt-6 text-sm">
-        <a href="/posts" class="text-accent hover:text-hover">
-          All posts &rarr;
-        </a>
-      </div>
-    )}
+    <p class="text-muted-fg">
+      No posts yet. <a href="/about" class="text-accent hover:text-hover">More about me &rarr;</a>
+    </p>
   </section>
 </Layout>

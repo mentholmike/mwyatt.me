@@ -1,45 +1,166 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+const resumeHref = "/resume-michael-wyatt.pdf";
 ---
 
 <Layout
   title="About"
-  description="Mike Wyatt — infrastructure engineer, builder of Lethe and WAGMIOS, Kubernetes in progress."
+  description="Michael Wyatt — Network Administrator at The Carter Center. 8+ years in network security, infrastructure, and cloud."
 >
-  <section class="pt-2 pb-6">
+  <section class="pt-2 pb-6 flex items-start justify-between gap-4">
     <h1 class="text-3xl font-bold tracking-tight">About</h1>
+    <a
+      href={resumeHref}
+      download="Michael-Wyatt-Resume.pdf"
+      class="inline-flex items-center gap-2 rounded-md border border-border bg-muted px-3 py-2 text-sm font-medium text-foreground hover:border-accent hover:text-accent transition-colors"
+      aria-label="Download resume as PDF"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="h-4 w-4"
+        aria-hidden="true"
+      >
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" y1="15" x2="12" y2="3" />
+      </svg>
+      Download PDF
+    </a>
   </section>
 
   <article class="prose prose-invert max-w-none">
-    <p>
-      I'm <strong>Mike Wyatt</strong>, an infrastructure engineer based in Hiram, Georgia. Day job is at
-      <a href="https://www.cartercenter.org" target="_blank" rel="noopener noreferrer">The Carter Center</a>
-      in Atlanta — Cisco firewalls, Hyper-V, Azure, and the kind of small-but-load-bearing systems you only notice when they break.
+    <p class="lead">
+      Experienced IT professional with 8+ years of expertise in network security, infrastructure
+      deployment, and cloud management. Proven track record managing enterprise-grade Cisco
+      environments, Azure cloud infrastructure, and SD-WAN implementations.
     </p>
-    <p>
-      Outside of work I build in public: <a href="https://github.com/openlethe/lethe" target="_blank" rel="noopener noreferrer">Lethe</a>
-      (a Go memory layer that gives AI agents persistent recall), <a href="https://github.com/mentholmike/wagmios" target="_blank" rel="noopener noreferrer">WAGMIOS</a>
-      (a self-hosted Docker manager with scoped API keys and a Vue 3 frontend), and
-      <a href="https://hotk.dev" target="_blank" rel="noopener noreferrer">Hand of the King</a>
-      (a single-player strategy game inspired by <em>King of Dragon Pass</em>, written in Go + Vue).
-    </p>
-    <p>
-      I'm studying for the CKA. The homelab runs Talos Linux on a multi-node cluster with ArgoCD, Longhorn, and the usual observability stack. The eventual goal is to land a platform / Kubernetes engineer role — currently interviewing.
-    </p>
-    <p>
-      This site is the build log. It's an Astro 6 static site, dark by default, served by nginx in a single ~25 MB container on GHCR. Source is on <a href="https://github.com/mentholmike/mwyatt.me" target="_blank" rel="noopener noreferrer">GitHub</a>; steal it.
+    <p class="text-sm text-muted-fg">
+      Hiram, GA 30141 · 678-901-7625 ·
+      <a href="mailto:webdevmike01@gmail.com">webdevmike01@gmail.com</a><br />
+      Willing to relocate: Chattanooga, TN · Atlanta, GA · Hiram, GA
     </p>
   </article>
 
   <hr class="my-10 border-border" />
 
   <section>
-    <h2 class="text-xl font-semibold mb-3">Find me</h2>
-    <ul class="space-y-1 text-sm">
-      <li>GitHub — <a class="text-accent hover:text-hover" href="https://github.com/mentholmike" target="_blank" rel="noopener noreferrer">@mentholmike</a></li>
-      <li>Docker Hub — <a class="text-accent hover:text-hover" href="https://hub.docker.com/u/itzmizzle" target="_blank" rel="noopener noreferrer">@itzmizzle</a></li>
-      <li>Email — <a class="text-accent hover:text-hover" href="mailto:mike@mwyatt.me">mike@mwyatt.me</a></li>
-      <li>RSS — <a class="text-accent hover:text-hover" href="/rss.xml">/rss.xml</a></li>
-    </ul>
+    <h2 class="text-xl font-semibold mb-4">Work Experience</h2>
+
+    <div class="space-y-8">
+      <div>
+        <div class="flex flex-wrap items-baseline justify-between gap-2">
+          <h3 class="text-lg font-semibold">Network Administrator</h3>
+          <span class="text-sm text-muted-fg">September 2023 – Present</span>
+        </div>
+        <p class="text-sm text-muted-fg">The Carter Center · Atlanta, GA</p>
+        <ul class="mt-3 list-disc pl-5 space-y-1 text-sm">
+          <li>Set up and managed multiple Cisco Firewalls across various locations using Firepower Management Center (FMC)</li>
+          <li>Oversaw network infrastructure including servers, switches, and Azure cloud environments, ensuring efficiency and security</li>
+          <li>Deployed and maintained high-availability VPN equipment for secure remote access via hairpinning</li>
+          <li>Implemented SD-WAN solutions to improve network performance, reduce costs, and enhance reliability across multiple locations</li>
+          <li>Led universal print rollout across the organization, streamlining printer management and reducing support overhead</li>
+          <li>Developed scripts to automate routine network administration tasks, improving operational efficiency</li>
+          <li>Led network upgrades ensuring minimal downtime and measurable performance enhancements</li>
+          <li>Managed security policies, monitored network activity, and performed proactive threat mitigation</li>
+          <li>Performed regular network audits to identify vulnerabilities and implemented necessary patches and updates</li>
+          <li>Monitored network traffic using Wireshark to troubleshoot issues and ensure optimal performance</li>
+          <li>Migrated legacy systems to modern networking technologies including SD-WAN and cloud-based solutions</li>
+          <li>Configured VLANs, ACLs, and routing protocols (OSPF, BGP) to optimize network performance</li>
+          <li>Implemented network monitoring stack via Docker (Prometheus, Grafana, Node Exporter) to proactively monitor server workloads and bandwidth anomalies</li>
+          <li>Created detailed documentation of network configurations, troubleshooting procedures, and SOPs</li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="flex flex-wrap items-baseline justify-between gap-2">
+          <h3 class="text-lg font-semibold">Desktop Administrator</h3>
+          <span class="text-sm text-muted-fg">August 2018 – September 2023</span>
+        </div>
+        <p class="text-sm text-muted-fg">Vista Metals Georgia · Adairsville, GA</p>
+        <ul class="mt-3 list-disc pl-5 space-y-1 text-sm">
+          <li>Managed users, passwords, and permissions via Active Directory, Google Admin, and Office 365</li>
+          <li>Installed and configured networking equipment including Cisco switches and Dell servers</li>
+          <li>Supported desktops, copiers, tablets, phones, and industrial scale systems</li>
+          <li>Gained expertise in VLAN, DHCP, TCP/IP, VPNs, and OS environments (Windows, Linux, RHEL, VMware)</li>
+          <li>Diagnosed and resolved IT support tickets efficiently, ensuring seamless system performance</li>
+          <li>Maintained network security through malware protection and Sophos antivirus solutions</li>
+          <li>Resolved LAN/WAN connectivity issues and configured TCP/IP settings</li>
+          <li>Provided remote support via RDP and VPN; guided end-users on backup and recovery best practices</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="my-10 border-border" />
+
+  <section>
+    <h2 class="text-xl font-semibold mb-4">Education</h2>
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+      <h3 class="text-base font-semibold">Bachelor of Science, Computer Information Systems</h3>
+      <span class="text-sm text-muted-fg">September 2014 – May 2018</span>
+    </div>
+    <p class="text-sm text-muted-fg">Shorter University · Rome, GA</p>
+  </section>
+
+  <hr class="my-10 border-border" />
+
+  <section>
+    <h2 class="text-xl font-semibold mb-4">Skills</h2>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-muted-fg mb-2">Networking</h3>
+        <p class="text-sm">
+          Cisco Firewalls (FMC/FTD), SD-WAN, VPN, VLAN, ACL, OSPF, BGP, TCP/IP, DHCP, DNS, LAN/WAN,
+          Meraki, Wireshark
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-muted-fg mb-2">Cloud &amp; Infra</h3>
+        <p class="text-sm">
+          Azure Administration, Azure AD, Azure IaaS, ARM Templates, Azure Resource Manager, Cloud
+          Networking, Load Balancing
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-muted-fg mb-2">Security</h3>
+        <p class="text-sm">
+          Network Security, Endpoint Security, Identity &amp; Access Management, Encryption, Log
+          Analysis, Threat Mitigation
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-muted-fg mb-2">Automation</h3>
+        <p class="text-sm">
+          PowerShell, Shell Scripting, Docker, Kubernetes, Prometheus, Grafana, CI/CD, Scripting
+          &amp; Automation
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-muted-fg mb-2">Systems</h3>
+        <p class="text-sm">
+          Windows Server, RHEL, Ubuntu, VMware, Virtualization, Active Directory, Office 365, Google
+          Workspace, Microsoft 365
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-muted-fg mb-2">Other</h3>
+        <p class="text-sm">
+          SD-WAN, Universal Print, SQL, Leadership, Mentoring, Capacity Planning, SOP Documentation
+        </p>
+      </div>
+    </div>
   </section>
 </Layout>
