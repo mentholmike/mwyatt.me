@@ -23,53 +23,5 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
       <slot />
     </main>
     <Footer />
-
-    <!-- Mermaid renderer: pick up ```mermaid blocks and render client-side. -->
-    <script is:inline src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-    <script is:inline>
-      (function () {
-        function renderMermaid() {
-          if (!window.mermaid) return;
-          var blocks = document.querySelectorAll(
-            'pre > code.language-mermaid, pre > code[class*="language-mermaid"]'
-          );
-          if (!blocks.length) return;
-          blocks.forEach(function (code) {
-            var pre = code.parentElement;
-            if (!pre || pre.dataset.mermaidRendered === '1') return;
-            var src = code.textContent || '';
-            var div = document.createElement('div');
-            div.className = 'mermaid';
-            div.textContent = src;
-            pre.replaceWith(div);
-          });
-          try {
-            window.mermaid.run({ startOnLoad: false });
-          } catch (e) {
-            console.error('mermaid.run failed', e);
-          }
-        }
-        function init() {
-          if (window.mermaid && window.mermaid.initialize) {
-            window.mermaid.initialize({
-              startOnLoad: false,
-              theme: 'dark',
-              securityLevel: 'loose',
-              themeVariables: {
-                background: 'transparent',
-                fontFamily: 'inherit',
-              },
-            });
-          }
-          renderMermaid();
-        }
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', init);
-        } else {
-          init();
-        }
-        document.addEventListener('astro:page-load', init);
-      })();
-    </script>
   </body>
 </html>

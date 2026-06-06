@@ -138,21 +138,15 @@ html.light {
   @apply border-border;
 }
 
-/* Mermaid diagrams: full-width, scrollable on narrow screens, dark-theme friendly. */
-.prose .mermaid {
+/* Diagram images: max-width, dark-friendly, scoped to prose so post
+   figures never overflow the reading column. */
+.prose img[src*="/posts/"] {
   display: block;
-  margin: 1.5rem 0;
-  padding: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  background-color: var(--muted);
-  overflow-x: auto;
-  text-align: center;
-}
-.prose .mermaid svg {
+  margin: 1.75rem auto;
   max-width: 100%;
   height: auto;
-}
-.prose pre:has(> code.language-mermaid) {
-  display: none;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background-color: var(--muted);
+  padding: 0.5rem;
 }

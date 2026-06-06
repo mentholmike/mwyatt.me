@@ -22,17 +22,7 @@ I'm also a picture guy. Words work, but I think in diagrams. So there are Mermai
 
 Here's the workflow that produced everything in this post:
 
-```mermaid
-flowchart LR
-    A[Detailed prompt<br/>spec + examples] --> B[Archimedes<br/>writes draft locally]
-    B --> C[Codex autoreview<br/>structured findings]
-    C -->|findings| B
-    C -->|clean| D[Push to Crabbox<br/>dev VPS]
-    D --> E[Fresh-env test<br/>health + smoke]
-    E -->|flag| B
-    E -->|pass| F[Push image to GHCR]
-    F --> G[Mike brings it up<br/>on prod HOTK VPS]
-```
+![Agentic loop — prompt to deploy in seven steps with two back-loops for findings and test flags](/posts/2026/how-i-built-hotk-infrastructure/agentic-loop.png)
 
 1. **I write the prompt.** Spec, examples, links to relevant docs, the test command, the success criteria.
 2. **Archimedes writes the draft.** He has full access to the repo, the test suite, the Docker environment, and the game's design doc. First pass is rough, but it's running.
@@ -63,29 +53,7 @@ On the HOTK campaign engine, the autoreview loop has caught at least one substan
 
 Here's the full picture, from the user's browser to the SQLite file on disk:
 
-```mermaid
-flowchart TB
-    User[User<br/>Claude.ai / ChatGPT / API client]
-    subgraph Edge[Edge — public]
-        WAF[SafeLine WAF<br/>rate limit, bot block,<br/>injection filter]
-        EdgeProxy[Caddy<br/>TLS termination,<br/>auto-renew]
-    end
-    subgraph Private[Private network]
-        Web[hotk-web<br/>static Vue site]
-        MCP[hotk-mcp<br/>MCP server, OAuth]
-        API[hotk-api<br/>Go game engine]
-        DB[(SQLite<br/>game state)]
-    end
-    Auth[Supabase Auth<br/>user identity, JWT]
-    User -->|HTTPS| WAF
-    WAF --> EdgeProxy
-    EdgeProxy --> Web
-    EdgeProxy -->|/mcp| MCP
-    EdgeProxy -->|/api| API
-    MCP -->|validate JWT| Auth
-    API -->|campaign ops| DB
-    MCP -->|tool calls| API
-```
+![End-to-end architecture — user through SafeLine WAF and Caddy to hotk-web, hotk-mcp, and hotk-api, with Supabase Auth and SQLite backing the services](/posts/2026/how-i-built-hotk-infrastructure/architecture-end-to-end.png)
 
 Two public entrypoints: `hotk.dev` for the website and dashboard, and `mcp.hotk.dev` for MCP. Both go through the same edge stack. Everything internal is on a private Docker network that nothing outside the VPS can touch directly.
 
@@ -114,23 +82,7 @@ I don't use GitHub Actions for deploys. The autoreview loop is the CI. Here's th
 
 The production stack is six services on a single VPS:
 
-```mermaid
-flowchart LR
-    subgraph hotk-public[hotk-public network]
-        Edge[SafeLine + Caddy]
-    end
-    subgraph hotk-private[hotk-private network]
-        Web[hotk-web<br/>:80]
-        API[hotk-api<br/>:1066]
-        MCP[hotk-mcp<br/>:8080]
-        Lethe[lethe<br/>:18483]
-    end
-    Edge --> Web
-    Edge --> API
-    Edge --> MCP
-    API --- MCP
-    Lethe -.->|memory layer| API
-```
+![Docker compose network topology — hotk-public lane with SafeLine + Caddy edge proxy, hotk-private lane with hotk-web, hotk-api, hotk-mcp, and the lethe memory layer](/posts/2026/how-i-built-hotk-infrastructure/network-topology.png)
 
 Only the edge proxy attaches to `hotk-public`. The game engine, MCP server, and Lethe live on `hotk-private` and are unreachable from the internet directly.
 
