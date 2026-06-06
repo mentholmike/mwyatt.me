@@ -1,5 +1,15 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+import PostCard from "../components/PostCard.astro";
+import { SITE } from "../consts";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) =>
+    new Date(b.data.pubDatetime).getTime() -
+    new Date(a.data.pubDatetime).getTime(),
+);
+const recent = posts.slice(0, SITE.postPerIndex);
 ---
 
 <Layout
@@ -19,8 +29,21 @@ import Layout from "../layouts/Layout.astro";
 
   <section class="pt-6">
     <h2 class="text-xl font-semibold mb-2">Posts</h2>
-    <p class="text-muted-fg">
-      No posts yet. <a href="/about" class="text-accent hover:text-hover">More about me &rarr;</a>
-    </p>
+    {recent.length === 0 ? (
+      <p class="text-muted-fg">
+        No posts yet. <a href="/about" class="text-accent hover:text-hover">More about me &rarr;</a>
+      </p>
+    ) : (
+      <ul class="divide-y divide-border">
+        {recent.map((p) => <PostCard post={p} />)}
+      </ul>
+    )}
+    {posts.length > recent.length && (
+      <div class="mt-6 text-sm">
+        <a href="/posts" class="text-accent hover:text-hover">
+          All posts &rarr;
+        </a>
+      </div>
+    )}
   </section>
 </Layout>
