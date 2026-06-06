@@ -44,7 +44,7 @@ pnpm run preview      # serves dist/ on :4321
 
 ## Deploy
 
-Images are built and pushed to `ghcr.io/mentholmike/mwyatt.me` pinned to the git commit SHA. The VPS pulls and runs the new tag, then verifies the container with a health check.
+Images are built and pushed to `ghcr.io/mentholmike/mwyatt-site` pinned to the git commit SHA. The VPS pulls and runs the new tag, then verifies the container with a health check.
 
 ## License
 

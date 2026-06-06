@@ -12,7 +12,9 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  # Image name kept distinct from the GitHub repo name to avoid collisions
+  # with any pre-existing package state on user-scoped GHCR packages.
+  IMAGE_NAME: ${{ github.repository_owner }}/mwyatt-site
 
 jobs:
   build:
