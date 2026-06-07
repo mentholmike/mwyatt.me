@@ -1,0 +1,169 @@
+<svg width="100%" viewBox="0 0 680 1020" role="img" xmlns="http://www.w3.org/2000/svg">
+ <title>Home Network &amp; Cluster Architecture</title>
+ <desc>Network architecture showing ISP router in bridge mode feeding a Firewalla, a VPS providing Pi-hole DoH tunnelled to the Firewalla, WireGuard VPN with Mullvad exit node, and a Unifi Switch segmenting four VLANs beneath.</desc>
+ <defs>
+ <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+ <path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+ </marker>
+ <style>
+ svg { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
+ .label-zone { font-size: 11px; fill: #6b7280; }
+ .label-node { font-size: 11px; font-weight: 600; fill: #111827; }
+ .label-sub { font-size: 10px; fill: #374151; }
+ .label-edge { font-size: 10px; fill: #6b7280; }
+ .arr { fill: none; stroke: #9ca3af; stroke-width: 1.2; marker-end: url(#arrow); }
+ .arr-dash { fill: none; stroke: #9ca3af; stroke-width: 1.2; stroke-dasharray: 5 4; marker-end: url(#arrow); }
+ /* zone fills */
+ .z-blue { fill: #eff6ff; stroke: #93c5fd; }
+ .z-amber { fill: #fffbeb; stroke: #fcd34d; }
+ .z-gray { fill: #f9fafb; stroke: #d1d5db; }
+ .z-purple { fill: #f5f3ff; stroke: #c4b5fd; }
+ .z-teal { fill: #f0fdfa; stroke: #5eead4; }
+ .z-coral { fill: #fff7ed; stroke: #fdba74; }
+ /* node fills — slightly darker shade of same family */
+ .n-blue { fill: #dbeafe; stroke: #60a5fa; }
+ .n-amber { fill: #fef3c7; stroke: #f59e0b; }
+ .n-gray { fill: #f3f4f6; stroke: #9ca3af; }
+ .n-purple { fill: #ede9fe; stroke: #a78bfa; }
+ .n-teal { fill: #ccfbf1; stroke: #2dd4bf; }
+ .n-coral { fill: #ffedd5; stroke: #fb923c; }
+ rect { stroke-width: 0.8; }
+ @media (prefers-color-scheme: dark) {
+ .label-zone { fill: #9ca3af; }
+ .label-node { fill: #f3f4f6; }
+ .label-sub { fill: #d1d5db; }
+ .label-edge { fill: #9ca3af; }
+ .arr, .arr-dash { stroke: #6b7280; }
+ .z-blue { fill: #1e3a5f; stroke: #3b82f6; }
+ .z-amber { fill: #3d2e00; stroke: #d97706; }
+ .z-gray { fill: #1f2937; stroke: #4b5563; }
+ .z-purple { fill: #2e1b5e; stroke: #7c3aed; }
+ .z-teal { fill: #0d3330; stroke: #0d9488; }
+ .z-coral { fill: #3d1a00; stroke: #ea580c; }
+ .n-blue { fill: #1e40af; stroke: #60a5fa; }
+ .n-amber { fill: #78350f; stroke: #fbbf24; }
+ .n-gray { fill: #374151; stroke: #6b7280; }
+ .n-purple { fill: #3b0764; stroke: #a78bfa; }
+ .n-teal { fill: #134e4a; stroke: #2dd4bf; }
+ .n-coral { fill: #7c2d12; stroke: #fb923c; }
+ }
+ </style>
+ </defs>
+
+ <!-- ══ INTERNET ZONE ══ -->
+ <rect class="z-blue" x="30" y="18" width="420" height="100" rx="14"/>
+ <text class="label-zone" x="50" y="36">Internet</text>
+ <rect class="n-blue" x="50" y="46" width="180" height="56" rx="8"/>
+ <text class="label-node" x="140" y="69" text-anchor="middle" dominant-baseline="central">VPS</text>
+ <text class="label-sub" x="140" y="87" text-anchor="middle" dominant-baseline="central">Pi-hole · DoH resolver</text>
+ <rect class="n-blue" x="248" y="46" width="180" height="56" rx="8"/>
+ <text class="label-node" x="338" y="69" text-anchor="middle" dominant-baseline="central">Mullvad</text>
+ <text class="label-sub" x="338" y="87" text-anchor="middle" dominant-baseline="central">VPN exit node</text>
+
+ <!-- ══ WIREGUARD ZONE ══ -->
+ <rect class="z-amber" x="470" y="18" width="182" height="232" rx="14"/>
+ <text class="label-zone" x="490" y="36">WireGuard VPN</text>
+ <rect class="n-amber" x="488" y="48" width="146" height="36" rx="8"/>
+ <text class="label-node" x="561" y="66" text-anchor="middle" dominant-baseline="central">iPhone</text>
+ <rect class="n-amber" x="488" y="94" width="146" height="36" rx="8"/>
+ <text class="label-node" x="561" y="112" text-anchor="middle" dominant-baseline="central">iPad</text>
+ <rect class="n-amber" x="488" y="140" width="146" height="36" rx="8"/>
+ <text class="label-node" x="561" y="158" text-anchor="middle" dominant-baseline="central">PC (desktop)</text>
+ <rect class="n-amber" x="488" y="188" width="146" height="52" rx="8"/>
+ <text class="label-node" x="561" y="207" text-anchor="middle" dominant-baseline="central">Exit node</text>
+ <text class="label-sub" x="561" y="225" text-anchor="middle" dominant-baseline="central">→ Mullvad</text>
+
+ <!-- Mullvad exit tunnel -->
+ <path class="arr-dash" d="M561 188 L561 102 L430 102"/>
+ <!-- WG tunnel into Firewalla -->
+ <path class="arr-dash" d="M470 140 L430 140 L430 268"/>
+ <text class="label-edge" x="436" y="133">WG tunnel</text>
+
+ <!-- ══ ISP ROUTER ══ -->
+ <rect class="z-gray" x="100" y="136" width="280" height="48" rx="10"/>
+ <text class="label-node" x="240" y="154" text-anchor="middle" dominant-baseline="central">ISP router</text>
+ <text class="label-sub" x="240" y="170" text-anchor="middle" dominant-baseline="central">bridge mode · DHCP WAN</text>
+ <!-- Internet → ISP -->
+ <line class="arr" x1="240" y1="118" x2="240" y2="136"/>
+ <!-- ISP → Firewalla -->
+ <line class="arr" x1="300" y1="184" x2="340" y2="230"/>
+
+ <!-- DoH tunnel VPS → Firewalla -->
+ <path class="arr-dash" d="M140 102 L140 254 L240 254"/>
+ <text class="label-edge" x="104" y="190">DoH</text>
+
+ <!-- ══ FIREWALLA ══ -->
+ <rect class="z-gray" x="240" y="230" width="280" height="48" rx="10"/>
+ <text class="label-node" x="380" y="248" text-anchor="middle" dominant-baseline="central">Firewalla</text>
+ <text class="label-sub" x="380" y="264" text-anchor="middle" dominant-baseline="central">upstream firewall · router · VLAN policy</text>
+ <!-- Firewalla → Switch -->
+ <line class="arr" x1="380" y1="278" x2="380" y2="334"/>
+
+ <!-- ══ UNIFI SWITCH ══ -->
+ <rect class="z-gray" x="100" y="334" width="560" height="48" rx="10"/>
+ <text class="label-node" x="380" y="352" text-anchor="middle" dominant-baseline="central">Unifi Switch</text>
+ <text class="label-sub" x="380" y="368" text-anchor="middle" dominant-baseline="central">physical segmentation · four VLANs</text>
+
+ <!-- Switch fan-out lines -->
+ <line class="arr" x1="160" y1="382" x2="120" y2="428"/>
+ <line class="arr" x1="290" y1="382" x2="270" y2="428"/>
+ <line class="arr" x1="470" y1="382" x2="490" y2="428"/>
+ <line class="arr" x1="580" y1="382" x2="600" y2="428"/>
+
+ <!-- ══ UNIFI MGMT VLAN ══ -->
+ <rect class="z-purple" x="30" y="428" width="170" height="88" rx="12"/>
+ <text class="label-zone" x="50" y="446">Unifi network</text>
+ <rect class="n-purple" x="46" y="458" width="138" height="44" rx="8"/>
+ <text class="label-node" x="115" y="474" text-anchor="middle" dominant-baseline="central">Unifi controller</text>
+ <text class="label-sub" x="115" y="490" text-anchor="middle" dominant-baseline="central">isolated VLAN</text>
+
+ <!-- ══ LAN VLAN ══ -->
+ <rect class="z-teal" x="216" y="428" width="196" height="196" rx="12"/>
+ <text class="label-zone" x="236" y="446">LAN network</text>
+ <rect class="n-teal" x="232" y="458" width="164" height="44" rx="8"/>
+ <text class="label-node" x="314" y="474" text-anchor="middle" dominant-baseline="central">Raspberry Pi</text>
+ <text class="label-sub" x="314" y="490" text-anchor="middle" dominant-baseline="central">home automation</text>
+ <rect class="n-teal" x="232" y="512" width="164" height="44" rx="8"/>
+ <text class="label-node" x="314" y="528" text-anchor="middle" dominant-baseline="central">unas-pro.lan</text>
+ <text class="label-sub" x="314" y="544" text-anchor="middle" dominant-baseline="central">NAS storage</text>
+ <rect class="n-teal" x="232" y="566" width="164" height="44" rx="8"/>
+ <text class="label-node" x="314" y="582" text-anchor="middle" dominant-baseline="central">mac mini.lan (M4)</text>
+ <text class="label-sub" x="314" y="598" text-anchor="middle" dominant-baseline="central">Archimedes · michaels</text>
+
+ <!-- ══ K3s VLAN ══ -->
+ <rect class="z-purple" x="428" y="428" width="124" height="196" rx="12"/>
+ <text class="label-zone" x="448" y="446">K3s network</text>
+ <rect class="n-purple" x="442" y="458" width="96" height="44" rx="7"/>
+ <text class="label-node" x="490" y="472" text-anchor="middle" dominant-baseline="central" style="font-size:10px">talos ckf-wwf</text>
+ <text class="label-sub" x="490" y="490" text-anchor="middle" dominant-baseline="central">control plane</text>
+ <rect class="n-purple" x="442" y="512" width="96" height="44" rx="7"/>
+ <text class="label-node" x="490" y="528" text-anchor="middle" dominant-baseline="central" style="font-size:10px">talos t9f-ihr</text>
+ <text class="label-sub" x="490" y="544" text-anchor="middle" dominant-baseline="central">worker</text>
+ <rect class="n-purple" x="442" y="566" width="96" height="44" rx="7"/>
+ <text class="label-node" x="490" y="582" text-anchor="middle" dominant-baseline="central" style="font-size:10px">talos 326-d4w</text>
+ <text class="label-sub" x="490" y="598" text-anchor="middle" dominant-baseline="central">worker</text>
+
+ <!-- ══ WIFI VLAN ══ -->
+ <rect class="z-coral" x="564" y="428" width="86" height="196" rx="12"/>
+ <text class="label-zone" x="578" y="446">WiFi</text>
+ <rect class="n-coral" x="576" y="458" width="62" height="34" rx="6"/>
+ <text class="label-node" x="607" y="476" text-anchor="middle" dominant-baseline="central" style="font-size:10px">iPhones</text>
+ <rect class="n-coral" x="576" y="502" width="62" height="34" rx="6"/>
+ <text class="label-node" x="607" y="520" text-anchor="middle" dominant-baseline="central" style="font-size:10px">iPads</text>
+ <rect class="n-coral" x="576" y="546" width="62" height="34" rx="6"/>
+ <text class="label-node" x="607" y="564" text-anchor="middle" dominant-baseline="central" style="font-size:10px">TVs</text>
+ <rect class="n-coral" x="576" y="590" width="62" height="28" rx="6"/>
+ <text class="label-node" x="607" y="605" text-anchor="middle" dominant-baseline="central" style="font-size:10px">Laptop</text>
+
+ <!-- ══ LEGEND ══ -->
+ <rect fill="none" stroke="#d1d5db" stroke-width="0.5" x="30" y="660" width="620" height="56" rx="10"/>
+ <text class="label-edge" x="50" y="678">Legend</text>
+ <line class="arr" x1="50" y1="698" x2="90" y2="698"/>
+ <text class="label-edge" x="96" y="702">Wired / routed</text>
+ <line class="arr-dash" x1="220" y1="698" x2="260" y2="698"/>
+ <text class="label-edge" x="266" y="702">Encrypted tunnel</text>
+ <rect class="n-purple" x="440" y="688" width="14" height="14" rx="3"/>
+ <text class="label-edge" x="460" y="697">K3s / Unifi VLAN</text>
+ <rect class="n-teal" x="440" y="706" width="14" height="14" rx="3"/>
+ <text class="label-edge" x="460" y="715">LAN devices</text>
+</svg>
