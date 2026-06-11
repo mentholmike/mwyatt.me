@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from "astro/config";
+import cloudflare from "@astrojs/cloudflare";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { SITE } from "./src/consts";
@@ -8,7 +9,8 @@ import { SITE } from "./src/consts";
 export default defineConfig({
   site: SITE.website,
   trailingSlash: "ignore",
-  output: "static",
+  output: "server",
+  adapter: cloudflare(),
   build: {
     format: "directory",
   },
