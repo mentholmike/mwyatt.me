@@ -9,7 +9,7 @@ import { SITE } from "./src/consts";
 export default defineConfig({
   site: SITE.website,
   trailingSlash: "ignore",
-  output: "server",
+  output: "static",
   adapter: cloudflare(),
   build: {
     format: "directory",
